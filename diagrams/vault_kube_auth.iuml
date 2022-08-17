@@ -1,0 +1,16 @@
+
+@startuml
+hide footbox
+
+participant "Kubernetes pod" as pod
+participant "Vault" as vault
+participant "Kubernetes API" as kube
+
+autonumber
+
+pod -> vault : authenticate using a Service Account (SA) and ask for a Vault role
+vault -> kube : ask kubernetes API to validate the pod identity
+kube -> vault : returns "Auth OK"
+vault -> pod : return a Vault Client Token with requested role's policies attached to it
+pod -> vault : Query Vault and read secrets that the role is allowed to
+@enduml
